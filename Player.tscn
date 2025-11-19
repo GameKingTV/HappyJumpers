@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqj8x7k3m4n5o"]
+
+[ext_resource type="Script" uid="uid://c2ai23g1pawmr" path="res://Player.gd" id="1_1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(10, 16)
+
+[node name="Player" type="CharacterBody2D"]
+z_index = 100
+script = ExtResource("1_1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+offset = Vector2(0, -2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_screen_exited"]

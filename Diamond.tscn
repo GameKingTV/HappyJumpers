@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://diamond123456"]
+
+[ext_resource type="Script" path="res://Diamond.gd" id="1_1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 20.0
+
+[node name="Diamond" type="Area2D"]
+z_index = 20
+monitoring = true
+monitorable = false
+script = ExtResource("1_1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+centered = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")
+

@@ -1,0 +1,143 @@
+[gd_scene load_steps=19 format=3 uid="uid://e641yqs4vudy"]
+
+[ext_resource type="Script" uid="uid://ty48kx6sbm5o" path="res://Game.gd" id="1_1"]
+[ext_resource type="PackedScene" uid="uid://bqj8x7k3m4n5o" path="res://Player.tscn" id="1_2"]
+[ext_resource type="Script" uid="uid://d2sf8hvcsvnup" path="res://Camera.gd" id="1_3"]
+[ext_resource type="Script" uid="uid://ewc38d7sok3" path="res://PlatformManager.gd" id="1_4"]
+[ext_resource type="PackedScene" uid="uid://c8lal0m1n2o3p" path="res://Platform.tscn" id="1_5"]
+[ext_resource type="Script" uid="uid://30klfre4hf05" path="res://WallManager.gd" id="1_6"]
+[ext_resource type="Script" uid="uid://sjy3nit6j685" path="res://PowerUpManager.gd" id="1_7"]
+[ext_resource type="PackedScene" uid="uid://d1e2f3g4h5i6j" path="res://PowerUp.tscn" id="1_8"]
+[ext_resource type="Texture2D" uid="uid://n42mo0tw78kc" path="res://solgovde_png.png" id="1_9"]
+[ext_resource type="Texture2D" uid="uid://cru4xj20uc2pe" path="res://saggovde_png.png" id="1_10"]
+[ext_resource type="Script" path="res://BackgroundManager.gd" id="1_11"]
+[ext_resource type="Script" path="res://StartFloorManager.gd" id="1_12"]
+[ext_resource type="PackedScene" uid="uid://coin123456" path="res://Coin.tscn" id="1_13"]
+[ext_resource type="PackedScene" uid="uid://diamond123456" path="res://Diamond.tscn" id="1_14"]
+[ext_resource type="Texture2D" path="res://coin.png" id="1_15"]
+[ext_resource type="Texture2D" path="res://dia1.png" id="1_16"]
+[ext_resource type="PackedScene" uid="uid://gameover123" path="res://GameOver.tscn" id="1_17"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(1080, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
+size = Vector2(50, 1919.8789)
+
+[node name="Game" type="Node2D" groups=["game"]]
+script = ExtResource("1_1")
+
+[node name="BackgroundManager" type="Node2D" parent="."]
+z_index = -100
+script = ExtResource("1_11")
+
+[node name="BackgroundSprite" type="Sprite2D" parent="BackgroundManager"]
+centered = true
+
+[node name="Player" parent="." instance=ExtResource("1_2")]
+position = Vector2(540, 1800)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(540, 1920)
+
+[node name="StartFloorManager" type="Node2D" parent="Floor"]
+script = ExtResource("1_12")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+z_index = 10
+position = Vector2(0, 1920)
+
+[node name="Gövde" type="Sprite2D" parent="LeftWall"]
+texture = ExtResource("1_9")
+centered = false
+
+[node name="EkKisimlar" type="Node2D" parent="LeftWall"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("RectangleShape2D_2")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+z_index = 10
+position = Vector2(1080, 1920)
+
+[node name="Gövde" type="Sprite2D" parent="RightWall"]
+texture = ExtResource("1_10")
+centered = false
+
+[node name="EkKisimlar" type="Node2D" parent="RightWall"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("RectangleShape2D_2")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(540, 1800)
+script = ExtResource("1_3")
+
+[node name="PlatformManager" type="Node" parent="."]
+script = ExtResource("1_4")
+platform_scene = ExtResource("1_5")
+coin_scene = ExtResource("1_13")
+diamond_scene = ExtResource("1_14")
+
+[node name="WallManager" type="Node" parent="."]
+script = ExtResource("1_6")
+left_wall = NodePath("../LeftWall")
+right_wall = NodePath("../RightWall")
+
+[node name="PowerUpManager" type="Node" parent="."]
+script = ExtResource("1_7")
+power_up_scene = ExtResource("1_8")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 48
+text = "Skor: 0"
+
+[node name="CoinContainer" type="HBoxContainer" parent="UI"]
+offset_left = 320.0
+offset_top = 20.0
+offset_right = 420.0
+offset_bottom = 80.0
+
+[node name="CoinIcon" type="TextureRect" parent="UI/CoinContainer"]
+layout_mode = 2
+texture = ExtResource("1_15")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinCountLabel" type="Label" parent="UI/CoinContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "0"
+
+[node name="DiamondContainer" type="HBoxContainer" parent="UI"]
+offset_left = 440.0
+offset_top = 20.0
+offset_right = 540.0
+offset_bottom = 80.0
+
+[node name="DiamondIcon" type="TextureRect" parent="UI/DiamondContainer"]
+layout_mode = 2
+texture = ExtResource("1_16")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DiamondCountLabel" type="Label" parent="UI/DiamondContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "0"
+
+[node name="GameOverOverlay" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="GameOver" parent="GameOverOverlay" instance=ExtResource("1_17")]
+
+[connection signal="game_over" from="Player" to="." method="_on_game_over"]
