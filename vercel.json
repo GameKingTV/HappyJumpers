@@ -1,7 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Export Godot project to web/ folder first'",
+  "buildCommand": "echo 'Note: Export Godot project to web/ folder before deploying'",
   "outputDirectory": "web",
+  "installCommand": "echo 'Skipping install - static site deployment'",
   "headers": [
     {
       "source": "/(.*)",
@@ -24,6 +25,12 @@
           "value": "application/wasm"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

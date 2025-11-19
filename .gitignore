@@ -30,4 +30,5 @@ Thumbs.db
 *~
 
 # Web export directory (will be generated)
-web/
+# Note: Uncomment the line below if you don't want to commit web exports
+# web/
