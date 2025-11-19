@@ -31,6 +31,17 @@ var player_highest_y: float = 0.0
 var counted_platforms: Array = []
 
 func _ready():
+	# Yeni oyun başladığında önceki oyun verilerini temizle
+	_reset_game_over_data()
+	
+	# Oyun değişkenlerini sıfırla
+	score = 0
+	coin_count = 0
+	diamond_count = 0
+	player_highest_y = 0.0
+	counted_platforms.clear()
+	game_time = 0.0
+	
 	# Player'dan gelen sinyalleri dinle
 	if player:
 		player.game_over.connect(_on_game_over)
@@ -250,3 +261,15 @@ static func load_game_over_data() -> Dictionary:
 		file.close()
 	
 	return {"coins": coins, "diamonds": diamonds, "time": time}
+
+# Oyun başladığında önceki oyun verilerini temizle
+func _reset_game_over_data():
+	const GAME_OVER_DATA_PATH = "user://game_over_data.save"
+	
+	# Dosyayı sıfırla (0, 0, 0.0 yaz)
+	var file = FileAccess.open(GAME_OVER_DATA_PATH, FileAccess.WRITE)
+	if file:
+		file.store_32(0)  # coins = 0
+		file.store_32(0)  # diamonds = 0
+		file.store_float(0.0)  # time = 0.0
+		file.close()
