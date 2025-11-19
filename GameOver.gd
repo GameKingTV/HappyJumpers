@@ -28,7 +28,8 @@ func _ready():
 	# Gölge efektlerini ayarla
 	_setup_shadows()
 	
-	# Oyun sonu verilerini al (Game.gd'den)
+	# Oyun sonu verilerini al (Game.gd'den direkt)
+	# set_game_over_data() çağrılmadıysa _load_game_over_data() çağrılacak
 	_load_game_over_data()
 	
 	# UI'ı güncelle
@@ -62,11 +63,37 @@ func _setup_shadows():
 
 # Oyun sonu verilerini yükle (Game.gd'den)
 func _load_game_over_data():
-	# Game.gd'den kaydedilen oyun sonu verilerini yükle
+	# Game node'unu bul (group veya parent üzerinden)
+	var game_node = get_tree().get_first_node_in_group("game")
+	if not game_node:
+		# Eğer group yoksa, parent tree'den Game.gd'yi bul
+		var current = get_parent()
+		while current:
+			if current.has_method("get_coin_count"):
+				game_node = current
+				break
+			current = current.get_parent()
+	
+	# Eğer Game node'u bulunduysa, direkt verileri al
+	if game_node and game_node.has_method("get_coin_count"):
+		earned_coins = game_node.get_coin_count()
+		earned_diamonds = game_node.get_diamond_count()
+		game_time = game_node.get_game_time()
+		return
+	
+	# Eğer Game node'u bulunamazsa, dosyadan yükle (yedek)
 	var data = Game.load_game_over_data()
 	earned_coins = data.get("coins", 0)
 	earned_diamonds = data.get("diamonds", 0)
 	game_time = data.get("time", 0.0)
+
+# Game.gd'den direkt veri almak için fonksiyon (Game.gd tarafından çağrılır)
+func set_game_over_data(coins: int, diamonds: int, time: float):
+	earned_coins = coins
+	earned_diamonds = diamonds
+	game_time = time
+	# UI'ı hemen güncelle
+	_update_display()
 
 # UI'ı güncelle
 func _update_display():

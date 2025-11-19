@@ -129,7 +129,7 @@ func _on_game_over():
 	# High score'u kaydet
 	_save_high_score(score)
 	
-	# Oyun sonu verilerini geçici dosyaya kaydet (GameOver ekranı için)
+	# Oyun sonu verilerini geçici dosyaya kaydet (yedek olarak)
 	_save_game_over_data()
 	
 	# Oyun sonu overlay'ini göster
@@ -138,6 +138,8 @@ func _on_game_over():
 		# GameOver script'ini başlat
 		var game_over_control = game_over_overlay.get_node_or_null("GameOver")
 		if game_over_control:
+			# Verileri direkt GameOver kontrolüne geçir (dosyadan okumak yerine)
+			game_over_control.set_game_over_data(coin_count, diamond_count, game_time)
 			# Butonları bağla (eğer henüz bağlanmadıysa)
 			game_over_control._setup_buttons()
 
